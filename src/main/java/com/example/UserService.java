@@ -1,4 +1,4 @@
-package main.java.com.example;
+package com.example;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -14,7 +14,7 @@ public class UserService {
 
         Connection conn =
             DriverManager.getConnection("jdbc:mysql://localhost/db",
-                    "root", password);
+                "root", password);
 
         Statement st = conn.createStatement();
 
@@ -24,8 +24,18 @@ public class UserService {
         st.executeQuery(query);
     }
 
-    // SMELL: Unused method
-    public void notUsed() {
-        System.out.println("I am never called");
+    // EVEN WORSE: another SQL injection
+    public void deleteUser(String username) throws Exception {
+
+        Connection conn =
+            DriverManager.getConnection("jdbc:mysql://localhost/db",
+                "root", password);
+
+        Statement st = conn.createStatement();
+
+        String query =
+            "DELETE FROM users WHERE name = '" + username + "'";
+
+        st.execute(query);
     }
 }
